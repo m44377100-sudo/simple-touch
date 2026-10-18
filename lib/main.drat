@@ -12,6 +12,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      title: 'Torch App',
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
+      ),
       home: const FlashlightScreen(),
     );
   }
@@ -41,16 +46,18 @@ class _FlashlightScreenState extends State<FlashlightScreen> {
         });
       }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error: $e')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error: $e')),
+        );
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: isTorchOn ? Colors.yellow : Colors.black,
+      backgroundColor: isTorchOn ? Colors.yellow.shade100 : Colors.black87,
       appBar: AppBar(
         title: const Text('Torch App'),
         centerTitle: true,
@@ -60,7 +67,7 @@ class _FlashlightScreenState extends State<FlashlightScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Icon(
-              Icons.flashlight_on,
+              isTorchOn ? Icons.flashlight_on : Icons.flashlight_off,
               size: 100,
               color: isTorchOn ? Colors.amber : Colors.grey,
             ),
