@@ -1,0 +1,78 @@
+import 'package:flutter/material.dart';
+import 'package:torch_light/torch_light.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Simple Torch',
+      theme: ThemeData.dark(),
+      home: const FlashlightScreen(),
+    );
+  }
+}
+
+class FlashlightScreen extends StatefulWidget {
+  const FlashlightScreen({super.key});
+
+  @override
+  State<FlashlightScreen> createState() => _FlashlightScreenState();
+}
+
+class _FlashlightScreenState extends State<FlashlightScreen> {
+  bool isTorchOn = false;
+
+  Future<void> _toggleTorch() async {
+    try {
+      if (isTorchOn) {
+        await TorchLight.disableTorch();
+        setState(() {
+          isTorchOn = false;
+        });
+      } else {
+        await TorchLight.enableTorch();
+        setState(() {
+          isTorchOn = true;
+        });
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: isTorchOn ? Colors.yellow[100] : Colors.black,
+      appBar: AppBar(
+        title: const Text('Torch App'),
+        centerTitle: true,
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.flashlight_on,
+              size: 100,
+              color: isTorchOn ? Colors.amber : Colors.grey,
+            ),
+            const SizedBox(height: 30),
+            ElevatedButton(
+              onPressed: _toggleTorch,
+              style: ElevatedButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                backgroundColor: isTorchOn ? Colors.red : Colors.green,
+              ),
+              child: Text(
+                isTorchOn ? 'TURN OFF' : 'TURN ON',
+                
