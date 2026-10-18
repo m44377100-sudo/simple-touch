@@ -75,4 +75,12 @@ class _FlashlightScreenState extends State<FlashlightScreen> {
               ),
               child: Text(
                 isTorchOn ? 'TURN OFF' : 'TURN ON',
-                
+                style: const TextStyle(fontSize: 20, color: Colors.white),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
